@@ -84,4 +84,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Created" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="4012c572-964f-481c-8f08-3a5b8513288d" ChangeDateTime="07/14/2015 04:00:55">
+    <Property Name="ElementName" Value="[dbo].[History].[ParentScore]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[History]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ThreadScore" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="237ca35d-4e9e-40e5-a4bf-354acc7db2db" ChangeDateTime="07/14/2015 04:00:57">
+    <Property Name="ElementName" Value="[dbo].[History].[Score]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[History]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TargetScore" />
+  </Operation>
 </Operations>

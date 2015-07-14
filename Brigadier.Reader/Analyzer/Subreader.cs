@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Brigadier.EntityFramework;
 using RedditSharp;
@@ -11,6 +12,8 @@ namespace Brigadier.Reader.Analyzer
 {
     public static class SubReader
     {
+        private static readonly Regex SubredditRegex = new Regex("/r/.+?/");
+
         public static void Run()
         {
             var reddit = GetReddit();
@@ -33,36 +36,88 @@ namespace Brigadier.Reader.Analyzer
 
         private static void CheckSubs(Reddit reddit, BrigadierEntities context)
         {
-            var subs = context.WatchedSubs.Select(x => x.Url).ToList();
+            var subs = context.WatchedSubs.Select(x => x.Url);
             if (subs.Any())
             {
+                var updated = false;
                 foreach (var sub in subs)
                 {
-                    GetRecentPosts(sub, reddit, context);
+                    var newest = GetRecentPosts(sub, reddit, context);
+                    var analyzed = AnalyzePosts(sub, newest);
+                    if (analyzed.Any())
+                    {
+                        foreach (var thread in analyzed)
+                        {
+                            context.Threads.Add(thread);
+                        }
+                        updated = true;
+                    }
+                }
+                if (updated)
+                {
+                    context.SaveChanges();
                 }
             }
         }
 
-        private static void GetRecentPosts(string sub, Reddit reddit, BrigadierEntities context)
+        private static IEnumerable<Post> GetRecentPosts(string sub, Reddit reddit, BrigadierEntities context)
         {
             var subreddit = reddit.GetSubreddit(sub);
-            if (subreddit != null)
-            {
-                var newest = subreddit.New.Take(100);
-                var threads = AnalyzeThreads(sub, newest);
-                var existing = context.Threads.Where(x => x.Sub == sub).Select(x => x.Url);
-                var newThreads = threads.Where(x => !existing.Contains(x.Url));
-            }
+            var existing = context.Threads.Where(x => x.Sub == sub).Select(x => x.Url);
+            var newData = subreddit.New.Take(25);
+            return newData.Where(x => !existing.Contains(x.Url.ToString()));
         }
 
-        private static IEnumerable<Thread> AnalyzeThreads(string sub, IEnumerable<Post> newest)
+        private static IEnumerable<Thread> AnalyzePosts(string sub, IEnumerable<Post> newest)
         {
-            var threads = newest.Select(x => new
+            return newest.Select(CreateThread);
+        }
+
+        private static Thread CreateThread(Post post)
+        {
+            var thread = new Thread
             {
-                x.Permalink,
-                Sub = sub
-            });
-            return threads.Select(x => new Thread { });
+                Url = post.Shortlink,
+                Author = post.AuthorName,
+                Sub = GetSubOfUrl(post.Permalink.ToString()),
+                LinkTypeId = GetLinkTypeOfUrl(post.Url.ToString()),
+                TargetUrl = post.Url.ToString(),
+                TargetAuthor = "Unknown",
+                TargetSub = GetSubOfUrl(post.Url.ToString()),
+                Comment = false,
+                Created = post.Created
+            };
+            return thread;
+        }
+
+        private static string GetSubOfUrl(string url)
+        {
+            var sub = "Unknown";
+            var match = SubredditRegex.Match(url);
+            if (match.Success)
+            {
+                var str = match.Value;
+                sub = match.Value.Substring(3, str.Length - 4);
+            }
+            return sub;
+        }
+
+        private static int GetLinkTypeOfUrl(string url)
+        {
+            var type = 4;
+            if (url.Contains("//np.red"))
+            {
+                type = 2;
+            }
+            else if (url.Contains("//archive"))
+            {
+                type = 3;
+            }
+            else if (url.Contains("//www.red") || url.Contains("//red"))
+            {
+                type = 1;
+            }
+            return type;
         }
     }
 }

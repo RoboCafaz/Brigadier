@@ -12,14 +12,15 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ThreadId" Type="int" Nullable="false" />
           <Property Name="Time" Type="datetime" Nullable="false" />
-          <Property Name="Score" Type="int" Nullable="false" />
+          <Property Name="ThreadScore" Type="int" Nullable="false" />
+          <Property Name="TargetScore" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="LinkType">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="12" Nullable="false" />
         </EntityType>
         <EntityType Name="Thread">
           <Key>
@@ -27,12 +28,12 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Url" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Author" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Sub" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Author" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Sub" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="LinkTypeId" Type="int" Nullable="false" />
           <Property Name="TargetUrl" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="TargetAuthor" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="TargetSub" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TargetAuthor" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="TargetSub" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="Comment" Type="bit" Nullable="false" />
           <Property Name="Created" Type="datetime" Nullable="false" />
         </EntityType>
@@ -41,7 +42,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Url" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Url" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <Association Name="FK_History_Thread">
           <End Role="Thread" Type="Self.Thread" Multiplicity="1" />
@@ -106,7 +107,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ThreadId" Type="Int32" Nullable="false" />
           <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Score" Type="Int32" Nullable="false" />
+          <Property Name="ThreadScore" Type="Int32" Nullable="false" />
+          <Property Name="TargetScore" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Thread" Relationship="BrigadierModel.FK_History_Thread" FromRole="History" ToRole="Thread" />
         </EntityType>
         <EntityType Name="LinkType">
@@ -114,7 +116,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Threads" Relationship="BrigadierModel.FK_Thread_Type" FromRole="LinkType" ToRole="Thread" />
         </EntityType>
         <EntityType Name="Thread">
@@ -123,12 +125,12 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Author" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Sub" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Author" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Sub" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="LinkTypeId" Type="Int32" Nullable="false" />
           <Property Name="TargetUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TargetAuthor" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TargetSub" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TargetAuthor" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="TargetSub" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Comment" Type="Boolean" Nullable="false" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Histories" Relationship="BrigadierModel.FK_History_Thread" FromRole="Thread" ToRole="History" />
@@ -139,7 +141,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Url" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_History_Thread">
           <End Type="BrigadierModel.Thread" Role="Thread" Multiplicity="1" />
@@ -165,7 +167,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -174,7 +176,8 @@
           <EntitySetMapping Name="Histories">
             <EntityTypeMapping TypeName="BrigadierModel.History">
               <MappingFragment StoreEntitySet="History">
-                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="TargetScore" ColumnName="TargetScore" />
+                <ScalarProperty Name="ThreadScore" ColumnName="ThreadScore" />
                 <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="ThreadId" ColumnName="ThreadId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
