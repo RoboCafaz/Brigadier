@@ -17,7 +17,7 @@ namespace Brigadier.Reader
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new Service1()
+                new PollerService()
             };
             ServiceBase.Run(ServicesToRun);
         }
