@@ -87,7 +87,6 @@
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
     <None Include="BrigadierEntities.edmx.diagram">
       <DependentUpon>BrigadierEntities.edmx</DependentUpon>
     </None>
