@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brigadier.Web", "Brigadier.
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Brigadier.Database", "Brigadier.Database\Brigadier.Database.sqlproj", "{0AE3B76A-40C5-4C0D-A21C-62EEC9D144E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brigadier.EntityFramework", "Brigadier.EntityFramework\Brigadier.EntityFramework.csproj", "{8D4319D2-0F8B-4E11-B1C9-C366CCA071BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brigadier.EntityFramework", "Brigadier.EntityFramework\Brigadier.EntityFramework.csproj", "{A1A9C3A1-888C-414E-8294-9002E152D0C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +25,10 @@ Global
 		{0AE3B76A-40C5-4C0D-A21C-62EEC9D144E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AE3B76A-40C5-4C0D-A21C-62EEC9D144E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0AE3B76A-40C5-4C0D-A21C-62EEC9D144E0}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{8D4319D2-0F8B-4E11-B1C9-C366CCA071BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8D4319D2-0F8B-4E11-B1C9-C366CCA071BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8D4319D2-0F8B-4E11-B1C9-C366CCA071BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8D4319D2-0F8B-4E11-B1C9-C366CCA071BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1A9C3A1-888C-414E-8294-9002E152D0C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1A9C3A1-888C-414E-8294-9002E152D0C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1A9C3A1-888C-414E-8294-9002E152D0C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1A9C3A1-888C-414E-8294-9002E152D0C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
