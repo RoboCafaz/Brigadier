@@ -22,7 +22,7 @@ namespace Brigadier.EntityFramework
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            throw new UnintentionalCodeFirstException();
+            base.OnModelCreating(modelBuilder);
         }
     
         public virtual IDbSet<History> Histories { get; set; }
