@@ -25,9 +25,9 @@ namespace Brigadier.EntityFramework
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<History> Histories { get; set; }
-        public virtual DbSet<LinkType> LinkTypes { get; set; }
-        public virtual DbSet<Thread> Threads { get; set; }
-        public virtual DbSet<WatchedSub> WatchedSubs { get; set; }
+        public virtual IDbSet<History> Histories { get; set; }
+        public virtual IDbSet<LinkType> LinkTypes { get; set; }
+        public virtual IDbSet<Thread> Threads { get; set; }
+        public virtual IDbSet<WatchedSub> WatchedSubs { get; set; }
     }
 }
