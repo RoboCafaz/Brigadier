@@ -12,8 +12,8 @@
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
-    <RootNamespace>Brigadeer.Database</RootNamespace>
-    <AssemblyName>Brigadeer.Database</AssemblyName>
+    <RootNamespace>Brigadier.Database</RootNamespace>
+    <AssemblyName>Brigadier.Database</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
