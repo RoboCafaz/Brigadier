@@ -28,12 +28,12 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Url" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Author" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Sub" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Author" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="Sub" Type="nvarchar" MaxLength="25" Nullable="false" />
           <Property Name="LinkTypeId" Type="int" Nullable="false" />
           <Property Name="TargetUrl" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="TargetAuthor" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="TargetSub" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="TargetAuthor" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="TargetSub" Type="nvarchar" MaxLength="25" Nullable="false" />
           <Property Name="Comment" Type="bit" Nullable="false" />
           <Property Name="Created" Type="datetime" Nullable="false" />
         </EntityType>
@@ -42,7 +42,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Url" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Url" Type="nvarchar" MaxLength="25" Nullable="false" />
         </EntityType>
         <Association Name="FK_History_Thread">
           <End Role="Thread" Type="Self.Thread" Multiplicity="1" />
@@ -125,12 +125,12 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Author" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Sub" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Author" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Sub" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="LinkTypeId" Type="Int32" Nullable="false" />
           <Property Name="TargetUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TargetAuthor" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="TargetSub" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="TargetAuthor" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="TargetSub" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="Comment" Type="Boolean" Nullable="false" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Histories" Relationship="BrigadierModel.FK_History_Thread" FromRole="Thread" ToRole="History" />
@@ -141,7 +141,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Url" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_History_Thread">
           <End Type="BrigadierModel.Thread" Role="Thread" Multiplicity="1" />

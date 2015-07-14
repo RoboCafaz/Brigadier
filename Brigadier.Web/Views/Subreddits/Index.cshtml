@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Brigadier.EntityFramework.WatchedSub>
+﻿@model IEnumerable<Brigadier.Web.Models.SubredditModel>
 
 <h2>@ViewBag.Title</h2>
 
@@ -7,7 +7,9 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
+                <th>Url</th>
+                <th>Most-linked By</th>
+                <th>Most-linked To</th>
             </tr>
         </thead>
         <tbody>
@@ -16,6 +18,22 @@
                 <tr>
                     <td>@sub.Id</td>
                     <td><a href="https://www.reddit.com/r/@sub.Url" target="_blank">@sub.Url</a></td>
+                    <td>
+                        <ul>
+                            @foreach (var pair in sub.Incoming)
+                            {
+                                <li><a href="https://www.reddit.com/r/@pair.Key" target="_blank">@pair.Key</a> (@pair.Value)</li>
+                            }
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            @foreach (var pair in sub.Outgoing)
+                            {
+                                <li><a href="https://www.reddit.com/r/@pair.Key" target="_blank">@pair.Key</a> (@pair.Value)</li>
+                            }
+                        </ul>
+                    </td>
                 </tr>
             }
         </tbody>

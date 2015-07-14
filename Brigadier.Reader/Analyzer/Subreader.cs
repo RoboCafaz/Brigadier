@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -43,7 +44,7 @@ namespace Brigadier.Reader.Analyzer
                 foreach (var sub in subs)
                 {
                     var newest = GetRecentPosts(sub, reddit, context);
-                    var analyzed = AnalyzePosts(sub, newest).Where(x => x.LinkTypeId != 4);
+                    var analyzed = AnalyzePosts(newest).Where(x => x.LinkTypeId != 4);
                     if (analyzed.Any())
                     {
                         foreach (var thread in analyzed)
@@ -55,7 +56,14 @@ namespace Brigadier.Reader.Analyzer
                 }
                 if (updated)
                 {
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (DbEntityValidationException e)
+                    {
+                        throw e;
+                    }
                 }
             }
         }
@@ -64,11 +72,11 @@ namespace Brigadier.Reader.Analyzer
         {
             var subreddit = reddit.GetSubreddit(sub);
             var existing = context.Threads.Where(x => x.Sub == sub).Select(x => x.Url);
-            var newData = subreddit.New.Take(25);
+            var newData = subreddit.New.Take(25).Where(x => !x.IsSelfPost);
             return newData.Where(x => !existing.Contains(x.Shortlink));
         }
 
-        private static IEnumerable<Thread> AnalyzePosts(string sub, IEnumerable<Post> newest)
+        private static IEnumerable<Thread> AnalyzePosts(IEnumerable<Post> newest)
         {
             return newest.Select(CreateThread);
         }
