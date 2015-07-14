@@ -43,7 +43,7 @@ namespace Brigadier.Reader.Analyzer
                 foreach (var sub in subs)
                 {
                     var newest = GetRecentPosts(sub, reddit, context);
-                    var analyzed = AnalyzePosts(sub, newest);
+                    var analyzed = AnalyzePosts(sub, newest).Where(x => x.LinkTypeId != 4);
                     if (analyzed.Any())
                     {
                         foreach (var thread in analyzed)
@@ -65,7 +65,7 @@ namespace Brigadier.Reader.Analyzer
             var subreddit = reddit.GetSubreddit(sub);
             var existing = context.Threads.Where(x => x.Sub == sub).Select(x => x.Url);
             var newData = subreddit.New.Take(25);
-            return newData.Where(x => !existing.Contains(x.Url.ToString()));
+            return newData.Where(x => !existing.Contains(x.Shortlink));
         }
 
         private static IEnumerable<Thread> AnalyzePosts(string sub, IEnumerable<Post> newest)
