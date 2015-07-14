@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="2603e3fe-2759-47e1-833a-6a39df05ae69" ChangeDateTime="07/13/2015 23:35:37">
+    <Property Name="ElementName" Value="[dbo].[WatchedThreads].[Link]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[WatchedThreads]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Reference" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e42374c5-5ddc-49aa-b49d-c839d1800732" ChangeDateTime="07/13/2015 23:35:41">
+    <Property Name="ElementName" Value="[dbo].[WatchedThreads].[Reference]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[WatchedThreads]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ReferenceId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4cb0da71-9388-4627-b1b9-0e658e0f9a8a" ChangeDateTime="07/13/2015 23:35:42">
+    <Property Name="ElementName" Value="[dbo].[WatchedThreads].[Type]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[WatchedThreads]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TypeId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8e4af2e6-8c33-4be9-970c-da18ec29a11d" ChangeDateTime="07/13/2015 23:56:22">
+    <Property Name="ElementName" Value="[dbo].[Thread].[TypeId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Thread]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Comment" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1bab233f-bc19-4454-8d96-d61ddfa3331d" ChangeDateTime="07/13/2015 23:57:00">
+    <Property Name="ElementName" Value="[dbo].[LinkType].[ThreadId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LinkType]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Type" />
+  </Operation>
+</Operations>
