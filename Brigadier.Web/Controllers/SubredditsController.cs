@@ -23,12 +23,12 @@ namespace Brigadier.Web.Controllers
                     {
                         Key = y.Key,
                         Value = y.Count()
-                    }).OrderByDescending(y=>y.Value),
+                    }).OrderByDescending(y=>y.Value).ThenBy(y => y.Key),
                     Outgoing = context.Threads.Where(y => y.Sub == x.Url).GroupBy(y => y.TargetSub).Select(y => new SubredditPair
                     {
                         Key = y.Key,
                         Value = y.Count()
-                    }).OrderByDescending(y => y.Value)
+                    }).OrderByDescending(y => y.Value).ThenBy(y=>y.Key)
                 }).ToList();
                 ViewBag.Title = "Watched Subreddits";
                 return View(subs);
