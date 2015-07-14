@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using Brigadier.EntityFramework;
+using Brigadier.Reader.Analyzer;
 
 namespace Brigadier.Reader
 {
     public class RedditPoller : IDisposable
     {
-        private const int Timeout = 60 * 60 * 5;
+        private const int Timeout = 1000 * 60 * 5;
 
         private readonly Timer _timer;
         private readonly BackgroundWorker _worker;
@@ -35,7 +36,7 @@ namespace Brigadier.Reader
 
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            
+            SubReader.Run();
         }
 
         public void Dispose()
