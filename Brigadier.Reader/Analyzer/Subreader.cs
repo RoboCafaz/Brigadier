@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Brigadier.Reader.Analyzer
 {
-    public class Subreader
+    public class SubReader
     {
     }
 }
