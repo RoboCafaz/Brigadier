@@ -35,4 +35,53 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Type" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="072b2400-0ffe-4415-9a70-ca6b03473c87" ChangeDateTime="07/14/2015 02:46:32">
+    <Property Name="ElementName" Value="[dbo].[Thread].[Url]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Thread]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Permalink" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2fa54c7d-9d9d-406b-98e7-2dbd2a900f42" ChangeDateTime="07/14/2015 02:48:44">
+    <Property Name="ElementName" Value="[dbo].[Thread].[Permalink]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Thread]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PermaLink" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5c121baf-4994-46ae-ac93-0d2b8250f26a" ChangeDateTime="07/14/2015 02:49:01">
+    <Property Name="ElementName" Value="[dbo].[Thread].[PermaLink]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Thread]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Link" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d140933e-3496-4b19-aef8-3d013b2515b5" ChangeDateTime="07/14/2015 02:49:04">
+    <Property Name="ElementName" Value="[dbo].[Thread].[Author]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Thread]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TargetAuthor" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="60e77ac7-0127-45ad-83fa-ddb443358212" ChangeDateTime="07/14/2015 02:49:07">
+    <Property Name="ElementName" Value="[dbo].[Thread].[Target]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Thread]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TargetUrl" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="ea741991-0d60-43ae-a481-c500b98a07cf" ChangeDateTime="07/14/2015 02:49:22">
+    <Property Name="ElementName" Value="[dbo].[Thread].[Link]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Thread]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Url" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="28f49f0d-fd8f-4112-8470-dfa38caf0090" ChangeDateTime="07/14/2015 02:51:58">
+    <Property Name="ElementName" Value="[dbo].[Thread].[Retrieved]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Thread]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Created" />
+  </Operation>
 </Operations>

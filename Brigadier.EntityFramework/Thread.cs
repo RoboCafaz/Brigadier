@@ -22,9 +22,14 @@ namespace Brigadier.EntityFramework
     
         public int Id { get; set; }
         public string Url { get; set; }
-        public bool Comment { get; set; }
-        public string Location { get; set; }
+        public string Author { get; set; }
+        public string Sub { get; set; }
         public int LinkTypeId { get; set; }
+        public string TargetUrl { get; set; }
+        public string TargetAuthor { get; set; }
+        public string TargetSub { get; set; }
+        public bool Comment { get; set; }
+        public System.DateTime Created { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<History> Histories { get; set; }

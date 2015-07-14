@@ -50,18 +50,19 @@ namespace Brigadier.Reader.Analyzer
             {
                 var newest = subreddit.New.Take(100);
                 var threads = AnalyzeThreads(sub, newest);
-                var existing = context.Threads.Where(x => x.Location == sub).Select(x => x.Url);
+                var existing = context.Threads.Where(x => x.Sub == sub).Select(x => x.Url);
                 var newThreads = threads.Where(x => !existing.Contains(x.Url));
             }
         }
 
         private static IEnumerable<Thread> AnalyzeThreads(string sub, IEnumerable<Post> newest)
         {
-            return newest.Select(x => new Thread
+            var threads = newest.Select(x => new
             {
-                Url = x.Permalink.ToString(),
-                Location = sub
+                x.Permalink,
+                Sub = sub
             });
+            return threads.Select(x => new Thread { });
         }
     }
 }

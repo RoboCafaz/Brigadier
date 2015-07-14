@@ -26,10 +26,15 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Url" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Comment" Type="bit" Nullable="false" />
-          <Property Name="Location" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Url" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Author" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sub" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LinkTypeId" Type="int" Nullable="false" />
+          <Property Name="TargetUrl" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="TargetAuthor" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TargetSub" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Comment" Type="bit" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="WatchedSub">
           <Key>
@@ -80,6 +85,20 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BrigadierModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BrigadierEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Histories" EntityType="BrigadierModel.History" />
+          <EntitySet Name="LinkTypes" EntityType="BrigadierModel.LinkType" />
+          <EntitySet Name="Threads" EntityType="BrigadierModel.Thread" />
+          <EntitySet Name="WatchedSubs" EntityType="BrigadierModel.WatchedSub" />
+          <AssociationSet Name="FK_History_Thread" Association="BrigadierModel.FK_History_Thread">
+            <End Role="Thread" EntitySet="Threads" />
+            <End Role="History" EntitySet="Histories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Thread_Type" Association="BrigadierModel.FK_Thread_Type">
+            <End Role="LinkType" EntitySet="LinkTypes" />
+            <End Role="Thread" EntitySet="Threads" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="History">
           <Key>
             <PropertyRef Name="Id" />
@@ -88,38 +107,43 @@
           <Property Name="ThreadId" Type="Int32" Nullable="false" />
           <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Score" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Thread" Relationship="Self.FK_History_Thread" FromRole="History" ToRole="Thread" />
+          <NavigationProperty Name="Thread" Relationship="BrigadierModel.FK_History_Thread" FromRole="History" ToRole="Thread" />
         </EntityType>
         <EntityType Name="LinkType">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Threads" Relationship="Self.FK_Thread_Type" FromRole="LinkType" ToRole="Thread" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Threads" Relationship="BrigadierModel.FK_Thread_Type" FromRole="LinkType" ToRole="Thread" />
         </EntityType>
         <EntityType Name="Thread">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Url" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Comment" Type="Boolean" Nullable="false" />
-          <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Author" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Sub" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LinkTypeId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Histories" Relationship="Self.FK_History_Thread" FromRole="Thread" ToRole="History" />
-          <NavigationProperty Name="LinkType" Relationship="Self.FK_Thread_Type" FromRole="Thread" ToRole="LinkType" />
+          <Property Name="TargetUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TargetAuthor" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TargetSub" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Comment" Type="Boolean" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Histories" Relationship="BrigadierModel.FK_History_Thread" FromRole="Thread" ToRole="History" />
+          <NavigationProperty Name="LinkType" Relationship="BrigadierModel.FK_Thread_Type" FromRole="Thread" ToRole="LinkType" />
         </EntityType>
         <EntityType Name="WatchedSub">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Url" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_History_Thread">
-          <End Role="Thread" Type="Self.Thread" Multiplicity="1" />
-          <End Role="History" Type="Self.History" Multiplicity="*" />
+          <End Type="BrigadierModel.Thread" Role="Thread" Multiplicity="1" />
+          <End Type="BrigadierModel.History" Role="History" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Thread">
               <PropertyRef Name="Id" />
@@ -130,8 +154,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Thread_Type">
-          <End Role="LinkType" Type="Self.LinkType" Multiplicity="1" />
-          <End Role="Thread" Type="Self.Thread" Multiplicity="*" />
+          <End Type="BrigadierModel.LinkType" Role="LinkType" Multiplicity="1" />
+          <End Type="BrigadierModel.Thread" Role="Thread" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="LinkType">
               <PropertyRef Name="Id" />
@@ -141,20 +165,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="BrigadierEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Histories" EntityType="Self.History" />
-          <EntitySet Name="LinkTypes" EntityType="Self.LinkType" />
-          <EntitySet Name="Threads" EntityType="Self.Thread" />
-          <EntitySet Name="WatchedSubs" EntityType="Self.WatchedSub" />
-          <AssociationSet Name="FK_History_Thread" Association="Self.FK_History_Thread">
-            <End Role="Thread" EntitySet="Threads" />
-            <End Role="History" EntitySet="Histories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Thread_Type" Association="Self.FK_Thread_Type">
-            <End Role="LinkType" EntitySet="LinkTypes" />
-            <End Role="Thread" EntitySet="Threads" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -164,37 +174,42 @@
           <EntitySetMapping Name="Histories">
             <EntityTypeMapping TypeName="BrigadierModel.History">
               <MappingFragment StoreEntitySet="History">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ThreadId" ColumnName="ThreadId" />
-                <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="ThreadId" ColumnName="ThreadId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LinkTypes">
             <EntityTypeMapping TypeName="BrigadierModel.LinkType">
               <MappingFragment StoreEntitySet="LinkType">
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Threads">
             <EntityTypeMapping TypeName="BrigadierModel.Thread">
               <MappingFragment StoreEntitySet="Thread">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
-                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="TargetSub" ColumnName="TargetSub" />
+                <ScalarProperty Name="TargetAuthor" ColumnName="TargetAuthor" />
+                <ScalarProperty Name="TargetUrl" ColumnName="TargetUrl" />
                 <ScalarProperty Name="LinkTypeId" ColumnName="LinkTypeId" />
+                <ScalarProperty Name="Sub" ColumnName="Sub" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="WatchedSubs">
             <EntityTypeMapping TypeName="BrigadierModel.WatchedSub">
               <MappingFragment StoreEntitySet="WatchedSub">
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
