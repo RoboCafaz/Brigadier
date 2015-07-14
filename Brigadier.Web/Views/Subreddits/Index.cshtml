@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Brigadier.EntityFramework.WatchedSub>
+
+<h2>@ViewBag.Title</h2>
+
+<section>
+    <table class="table table-responsive table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var sub in Model)
+            {
+                <tr>
+                    <td>@sub.Id</td>
+                    <td><a href="https://www.reddit.com/r/@sub.Url" target="_blank">@sub.Url</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
