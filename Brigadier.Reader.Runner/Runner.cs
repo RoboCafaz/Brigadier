@@ -11,7 +11,7 @@ namespace Brigadier.Reader.Runner
     {
         public static void Main(String[] args)
         {
-            //SubReader.Run();
+            SubReader.Run();
             PostReader.Run();
         }
     }
