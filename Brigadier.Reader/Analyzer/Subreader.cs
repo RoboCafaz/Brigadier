@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Brigadier.EntityFramework;
 using RedditSharp;
 using RedditSharp.Things;
+using Post = Brigadier.EntityFramework.Post;
 
 namespace Brigadier.Reader.Analyzer
 {
@@ -44,31 +45,20 @@ namespace Brigadier.Reader.Analyzer
                 foreach (var sub in subs)
                 {
                     var newest = GetRecentPosts(sub, reddit, context);
-                    var analyzed = AnalyzePosts(newest).Where(x => x.LinkTypeId != 4);
-                    if (analyzed.Any())
-                    {
-                        foreach (var thread in analyzed)
-                        {
-                            context.Threads.Add(thread);
-                        }
-                        updated = true;
-                    }
+                    AnalyzePosts(newest, context);
                 }
-                if (updated)
+                try
                 {
-                    try
-                    {
-                        context.SaveChanges();
-                    }
-                    catch (DbEntityValidationException e)
-                    {
-                        throw e;
-                    }
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    throw e;
                 }
             }
         }
 
-        private static IEnumerable<Post> GetRecentPosts(string sub, Reddit reddit, BrigadierEntities context)
+        private static IEnumerable<RedditSharp.Things.Post> GetRecentPosts(string sub, Reddit reddit, BrigadierEntities context)
         {
             var subreddit = reddit.GetSubreddit(sub);
             var existing = context.Threads.Where(x => x.Sub == sub).Select(x => x.Url);
@@ -76,26 +66,50 @@ namespace Brigadier.Reader.Analyzer
             return newData.Where(x => !existing.Contains(x.Shortlink));
         }
 
-        private static IEnumerable<Thread> AnalyzePosts(IEnumerable<Post> newest)
+        private static void AnalyzePosts(IEnumerable<RedditSharp.Things.Post> newest, BrigadierEntities context)
         {
-            return newest.Select(CreateThread);
+            foreach (var post in newest)
+            {
+                CreateThread(post, context);
+            }
         }
 
-        private static Thread CreateThread(Post post)
+        private static void CreateThread(RedditSharp.Things.Post reddit, BrigadierEntities context)
         {
-            var thread = new Thread
+            if (context.Posts.Any(x => x.LocalThread.Url == reddit.Shortlink && x.TargetThread.Url == reddit.Url.ToString()))
             {
-                Url = post.Shortlink,
-                Author = post.AuthorName,
-                Sub = GetSubOfUrl(post.Permalink.ToString()),
-                LinkTypeId = GetLinkTypeOfUrl(post.Url.ToString()),
-                TargetUrl = post.Url.ToString(),
-                TargetAuthor = "Unknown",
-                TargetSub = GetSubOfUrl(post.Url.ToString()),
-                Comment = false,
-                Created = post.Created
+                return;
+            }
+            var local = context.Threads.SingleOrDefault(x => x.Url == reddit.Shortlink);
+            if (local == null)
+            {
+                local = new Thread
+                {
+                    Url = reddit.Shortlink,
+                    Author = reddit.AuthorName,
+                    Sub = GetSubOfUrl(reddit.Permalink.ToString())
+                };
+                context.Threads.Add(local);
+            }
+            var target = context.Threads.SingleOrDefault(x => x.Url == reddit.Url.ToString());
+            if (target == null)
+            {
+                target = new Thread
+                {
+                    Url = reddit.Url.ToString(),
+                    Author = "Unknown",
+                    Sub = GetSubOfUrl(reddit.Url.ToString())
+                };
+                context.Threads.Add(target);
+            }
+            var post = new Post
+            {
+                LinkTypeId = GetLinkTypeOfUrl(reddit.Url.ToString()),
+                Created = reddit.Created,
+                LocalThread = local,
+                TargetThread = target
             };
-            return thread;
+            context.Posts.Add(post);
         }
 
         private static string GetSubOfUrl(string url)

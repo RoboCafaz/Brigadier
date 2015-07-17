@@ -12,18 +12,16 @@ namespace Brigadier.EntityFramework
     using System;
     using System.Collections.Generic;
     
-    public partial class LinkType
+    public partial class Post
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public LinkType()
-        {
-            this.Posts = new HashSet<Post>();
-        }
-    
         public int Id { get; set; }
-        public string Type { get; set; }
+        public int LocalThreadId { get; set; }
+        public int LinkTypeId { get; set; }
+        public int TargetThreadId { get; set; }
+        public System.DateTime Created { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Post> Posts { get; set; }
+        public virtual Thread LocalThread { get; set; }
+        public virtual Thread TargetThread { get; set; }
+        public virtual LinkType LinkType { get; set; }
     }
 }

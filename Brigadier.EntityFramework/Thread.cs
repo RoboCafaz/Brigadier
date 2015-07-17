@@ -18,21 +18,20 @@ namespace Brigadier.EntityFramework
         public Thread()
         {
             this.Histories = new HashSet<History>();
+            this.TargetingPosts = new HashSet<Post>();
+            this.TargetedPosts = new HashSet<Post>();
         }
     
         public int Id { get; set; }
         public string Url { get; set; }
         public string Author { get; set; }
         public string Sub { get; set; }
-        public int LinkTypeId { get; set; }
-        public string TargetUrl { get; set; }
-        public string TargetAuthor { get; set; }
-        public string TargetSub { get; set; }
-        public bool Comment { get; set; }
-        public System.DateTime Created { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<History> Histories { get; set; }
-        public virtual LinkType LinkType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Post> TargetingPosts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Post> TargetedPosts { get; set; }
     }
 }

@@ -22,6 +22,16 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Type" Type="nvarchar" MaxLength="12" Nullable="false" />
         </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocalThreadId" Type="int" Nullable="false" />
+          <Property Name="LinkTypeId" Type="int" Nullable="false" />
+          <Property Name="TargetThreadId" Type="int" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Thread">
           <Key>
             <PropertyRef Name="Id" />
@@ -30,12 +40,6 @@
           <Property Name="Url" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Author" Type="nvarchar" MaxLength="25" Nullable="false" />
           <Property Name="Sub" Type="nvarchar" MaxLength="25" Nullable="false" />
-          <Property Name="LinkTypeId" Type="int" Nullable="false" />
-          <Property Name="TargetUrl" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="TargetAuthor" Type="nvarchar" MaxLength="25" Nullable="false" />
-          <Property Name="TargetSub" Type="nvarchar" MaxLength="25" Nullable="false" />
-          <Property Name="Comment" Type="bit" Nullable="false" />
-          <Property Name="Created" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="WatchedSub">
           <Key>
@@ -56,30 +60,63 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Thread_Type">
+        <Association Name="FK_Thread_Link">
           <End Role="LinkType" Type="Self.LinkType" Multiplicity="1" />
-          <End Role="Thread" Type="Self.Thread" Multiplicity="*" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="LinkType">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Thread">
+            <Dependent Role="Post">
               <PropertyRef Name="LinkTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Thread_Local">
+          <End Role="Thread" Type="Self.Thread" Multiplicity="1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Thread">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="LocalThreadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Thread_Target">
+          <End Role="Thread" Type="Self.Thread" Multiplicity="1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Thread">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="TargetThreadId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="BrigadierModelStoreContainer">
           <EntitySet Name="History" EntityType="Self.History" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LinkType" EntityType="Self.LinkType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Thread" EntityType="Self.Thread" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WatchedSub" EntityType="Self.WatchedSub" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_History_Thread" Association="Self.FK_History_Thread">
             <End Role="Thread" EntitySet="Thread" />
             <End Role="History" EntitySet="History" />
           </AssociationSet>
-          <AssociationSet Name="FK_Thread_Type" Association="Self.FK_Thread_Type">
+          <AssociationSet Name="FK_Thread_Link" Association="Self.FK_Thread_Link">
             <End Role="LinkType" EntitySet="LinkType" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Thread_Local" Association="Self.FK_Thread_Local">
             <End Role="Thread" EntitySet="Thread" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Thread_Target" Association="Self.FK_Thread_Target">
+            <End Role="Thread" EntitySet="Thread" />
+            <End Role="Post" EntitySet="Post" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -89,15 +126,24 @@
         <EntityContainer Name="BrigadierEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Histories" EntityType="BrigadierModel.History" />
           <EntitySet Name="LinkTypes" EntityType="BrigadierModel.LinkType" />
+          <EntitySet Name="Posts" EntityType="BrigadierModel.Post" />
           <EntitySet Name="Threads" EntityType="BrigadierModel.Thread" />
           <EntitySet Name="WatchedSubs" EntityType="BrigadierModel.WatchedSub" />
           <AssociationSet Name="FK_History_Thread" Association="BrigadierModel.FK_History_Thread">
             <End Role="Thread" EntitySet="Threads" />
             <End Role="History" EntitySet="Histories" />
           </AssociationSet>
-          <AssociationSet Name="FK_Thread_Type" Association="BrigadierModel.FK_Thread_Type">
-            <End Role="LinkType" EntitySet="LinkTypes" />
+          <AssociationSet Name="FK_Thread_Local" Association="BrigadierModel.FK_Thread_Local">
             <End Role="Thread" EntitySet="Threads" />
+            <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Thread_Target" Association="BrigadierModel.FK_Thread_Target">
+            <End Role="Thread" EntitySet="Threads" />
+            <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Thread_Link" Association="BrigadierModel.FK_Thread_Link">
+            <End Role="LinkType" EntitySet="LinkTypes" />
+            <End Role="Post" EntitySet="Posts" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="History">
@@ -117,7 +163,20 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Type" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Threads" Relationship="BrigadierModel.FK_Thread_Type" FromRole="LinkType" ToRole="Thread" />
+          <NavigationProperty Name="Posts" Relationship="BrigadierModel.FK_Thread_Link" FromRole="LinkType" ToRole="Post" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocalThreadId" Type="Int32" Nullable="false" />
+          <Property Name="LinkTypeId" Type="Int32" Nullable="false" />
+          <Property Name="TargetThreadId" Type="Int32" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="LocalThread" Relationship="BrigadierModel.FK_Thread_Local" FromRole="Post" ToRole="Thread" />
+          <NavigationProperty Name="TargetThread" Relationship="BrigadierModel.FK_Thread_Target" FromRole="Post" ToRole="Thread" />
+          <NavigationProperty Name="LinkType" Relationship="BrigadierModel.FK_Thread_Link" FromRole="Post" ToRole="LinkType" />
         </EntityType>
         <EntityType Name="Thread">
           <Key>
@@ -127,14 +186,9 @@
           <Property Name="Url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Author" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="Sub" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="LinkTypeId" Type="Int32" Nullable="false" />
-          <Property Name="TargetUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TargetAuthor" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="TargetSub" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="Comment" Type="Boolean" Nullable="false" />
-          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Histories" Relationship="BrigadierModel.FK_History_Thread" FromRole="Thread" ToRole="History" />
-          <NavigationProperty Name="LinkType" Relationship="BrigadierModel.FK_Thread_Type" FromRole="Thread" ToRole="LinkType" />
+          <NavigationProperty Name="TargetingPosts" Relationship="BrigadierModel.FK_Thread_Local" FromRole="Thread" ToRole="Post" />
+          <NavigationProperty Name="TargetedPosts" Relationship="BrigadierModel.FK_Thread_Target" FromRole="Thread" ToRole="Post" />
         </EntityType>
         <EntityType Name="WatchedSub">
           <Key>
@@ -155,14 +209,38 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Thread_Type">
+        <Association Name="FK_Thread_Local">
+          <End Type="BrigadierModel.Thread" Role="Thread" Multiplicity="1" />
+          <End Type="BrigadierModel.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Thread">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="LocalThreadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Thread_Target">
+          <End Type="BrigadierModel.Thread" Role="Thread" Multiplicity="1" />
+          <End Type="BrigadierModel.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Thread">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="TargetThreadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Thread_Link">
           <End Type="BrigadierModel.LinkType" Role="LinkType" Multiplicity="1" />
-          <End Type="BrigadierModel.Thread" Role="Thread" Multiplicity="*" />
+          <End Type="BrigadierModel.Post" Role="Post" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="LinkType">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Thread">
+            <Dependent Role="Post">
               <PropertyRef Name="LinkTypeId" />
             </Dependent>
           </ReferentialConstraint>
@@ -192,15 +270,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Posts">
+            <EntityTypeMapping TypeName="BrigadierModel.Post">
+              <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="TargetThreadId" ColumnName="TargetThreadId" />
+                <ScalarProperty Name="LinkTypeId" ColumnName="LinkTypeId" />
+                <ScalarProperty Name="LocalThreadId" ColumnName="LocalThreadId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Threads">
             <EntityTypeMapping TypeName="BrigadierModel.Thread">
               <MappingFragment StoreEntitySet="Thread">
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Comment" ColumnName="Comment" />
-                <ScalarProperty Name="TargetSub" ColumnName="TargetSub" />
-                <ScalarProperty Name="TargetAuthor" ColumnName="TargetAuthor" />
-                <ScalarProperty Name="TargetUrl" ColumnName="TargetUrl" />
-                <ScalarProperty Name="LinkTypeId" ColumnName="LinkTypeId" />
                 <ScalarProperty Name="Sub" ColumnName="Sub" />
                 <ScalarProperty Name="Author" ColumnName="Author" />
                 <ScalarProperty Name="Url" ColumnName="Url" />

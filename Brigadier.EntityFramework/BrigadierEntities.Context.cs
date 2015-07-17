@@ -27,6 +27,7 @@ namespace Brigadier.EntityFramework
     
         public virtual IDbSet<History> Histories { get; set; }
         public virtual IDbSet<LinkType> LinkTypes { get; set; }
+        public virtual IDbSet<Post> Posts { get; set; }
         public virtual IDbSet<Thread> Threads { get; set; }
         public virtual IDbSet<WatchedSub> WatchedSubs { get; set; }
     }

@@ -72,6 +72,9 @@
     <Compile Include="LinkType.cs">
       <DependentUpon>BrigadierEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Post.cs">
+      <DependentUpon>BrigadierEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Thread.cs">
       <DependentUpon>BrigadierEntities.tt</DependentUpon>
