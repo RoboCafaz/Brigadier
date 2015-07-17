@@ -18,8 +18,8 @@ namespace Brigadier.EntityFramework
         public Thread()
         {
             this.History = new HashSet<History>();
+            this.LocalPosts = new HashSet<Post>();
             this.TargetingPosts = new HashSet<Post>();
-            this.TargetedPosts = new HashSet<Post>();
         }
     
         public int Id { get; set; }
@@ -30,8 +30,8 @@ namespace Brigadier.EntityFramework
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<History> History { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Post> TargetingPosts { get; set; }
+        public virtual ICollection<Post> LocalPosts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Post> TargetedPosts { get; set; }
+        public virtual ICollection<Post> TargetingPosts { get; set; }
     }
 }

@@ -50,11 +50,10 @@ namespace Brigadier.Reader.Analyzer
                 try
                 {
                     Debug.WriteLine("Fetching post.");
-                    var thing = reddit.GetPost(new Uri("http://reddit.com" + uri.LocalPath));
+                    var thing = reddit.GetPost(uri);
                     if (thing == null)
                     {
                         Debug.WriteLine("Could not find post.");
-                        KillThread(thread);
                     }
                     else
                     {
@@ -66,24 +65,24 @@ namespace Brigadier.Reader.Analyzer
                         };
                         Debug.WriteLine("Score was " + history.Score + " at " + history.Time);
                         context.Histories.Add(history);
+                        return;
                     }
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Post fetching failed.");
-                    KillThread(thread);
                 }
             }
             else
             {
                 Debug.WriteLine("Could not create thread for url.");
-                KillThread(thread);
             }
+            KillThread(thread);
         }
 
         private static void KillThread(Thread thread)
         {
-            foreach (var post in thread.TargetingPosts)
+            foreach (var post in thread.TargetingPosts.Concat(thread.LocalPosts))
             {
                 KillPost(post);
             }

@@ -41,15 +41,8 @@ namespace Brigadier.Reader.Analyzer
                     var newest = GetRecentPosts(sub, reddit, context);
                     AnalyzePosts(newest, context);
                 }
-                try
-                {
-                    Debug.WriteLine("Saving database...");
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException e)
-                {
-                    throw e;
-                }
+                Debug.WriteLine("Saving database...");
+                context.SaveChanges();
             }
         }
 
@@ -74,7 +67,7 @@ namespace Brigadier.Reader.Analyzer
         private static void CreateThread(RedditSharp.Things.Post reddit, BrigadierEntities context)
         {
             Debug.WriteLine(" - Analyzing " + reddit.Shortlink + "- ");
-            var url = reddit.Url.ToString();
+            var url = "http://reddit.com" + reddit.Url.LocalPath;
             var type = GetLinkTypeOfUrl(url);
             if (type == 4)
             {

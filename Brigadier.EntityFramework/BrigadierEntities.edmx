@@ -187,8 +187,8 @@
           <Property Name="Author" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="Sub" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="History" Relationship="BrigadierModel.FK_History_Thread" FromRole="Thread" ToRole="History" />
-          <NavigationProperty Name="TargetingPosts" Relationship="BrigadierModel.FK_Thread_Local" FromRole="Thread" ToRole="Post" />
-          <NavigationProperty Name="TargetedPosts" Relationship="BrigadierModel.FK_Thread_Target" FromRole="Thread" ToRole="Post" />
+          <NavigationProperty Name="LocalPosts" Relationship="BrigadierModel.FK_Thread_Local" FromRole="Thread" ToRole="Post" />
+          <NavigationProperty Name="TargetingPosts" Relationship="BrigadierModel.FK_Thread_Target" FromRole="Thread" ToRole="Post" />
         </EntityType>
         <EntityType Name="WatchedSub">
           <Key>
