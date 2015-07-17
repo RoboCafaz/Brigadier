@@ -37,6 +37,7 @@ namespace Brigadier.Reader
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
             SubReader.Run();
+            PostReader.Run();
         }
 
         public void Dispose()
