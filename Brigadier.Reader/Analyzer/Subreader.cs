@@ -67,13 +67,13 @@ namespace Brigadier.Reader.Analyzer
         private static void CreateThread(RedditSharp.Things.Post reddit, BrigadierEntities context)
         {
             Debug.WriteLine(" - Analyzing " + reddit.Shortlink + "- ");
-            var url = "http://reddit.com" + reddit.Url.LocalPath;
-            var type = GetLinkTypeOfUrl(url);
+            var type = GetLinkTypeOfUrl(reddit.Url.Host);
             if (type == 4)
             {
                 Debug.WriteLine("We don't handle this type yet.");
                 return;
             }
+            var url = "http://reddit.com" + reddit.Url.LocalPath;
             var local = context.Threads.SingleOrDefault(x => x.Url == reddit.Shortlink);
             if (local != null)
             {
@@ -130,15 +130,15 @@ namespace Brigadier.Reader.Analyzer
         private static int GetLinkTypeOfUrl(string url)
         {
             var type = 4;
-            if (url.Contains("//np.red"))
+            if (url.Contains("np.red"))
             {
                 type = 2;
             }
-            else if (url.Contains("//archive"))
+            else if (url.Contains("archive"))
             {
                 type = 3;
             }
-            else if (url.Contains("//www.red") || url.Contains("//red"))
+            else if (url.Contains("www.red") || url.Contains("red"))
             {
                 type = 1;
             }
