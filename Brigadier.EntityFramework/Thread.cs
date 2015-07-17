@@ -17,7 +17,7 @@ namespace Brigadier.EntityFramework
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Thread()
         {
-            this.Histories = new HashSet<History>();
+            this.History = new HashSet<History>();
             this.TargetingPosts = new HashSet<Post>();
             this.TargetedPosts = new HashSet<Post>();
         }
@@ -28,7 +28,7 @@ namespace Brigadier.EntityFramework
         public string Sub { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<History> Histories { get; set; }
+        public virtual ICollection<History> History { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Post> TargetingPosts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

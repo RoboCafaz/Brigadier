@@ -17,8 +17,7 @@ namespace Brigadier.EntityFramework
         public int Id { get; set; }
         public int ThreadId { get; set; }
         public System.DateTime Time { get; set; }
-        public int ThreadScore { get; set; }
-        public int TargetScore { get; set; }
+        public int Score { get; set; }
     
         public virtual Thread Thread { get; set; }
     }

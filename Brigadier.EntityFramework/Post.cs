@@ -19,9 +19,10 @@ namespace Brigadier.EntityFramework
         public int LinkTypeId { get; set; }
         public int TargetThreadId { get; set; }
         public System.DateTime Created { get; set; }
+        public bool Done { get; set; }
     
+        public virtual LinkType LinkType { get; set; }
         public virtual Thread LocalThread { get; set; }
         public virtual Thread TargetThread { get; set; }
-        public virtual LinkType LinkType { get; set; }
     }
 }

@@ -12,8 +12,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ThreadId" Type="int" Nullable="false" />
           <Property Name="Time" Type="datetime" Nullable="false" />
-          <Property Name="ThreadScore" Type="int" Nullable="false" />
-          <Property Name="TargetScore" Type="int" Nullable="false" />
+          <Property Name="Score" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="LinkType">
           <Key>
@@ -31,6 +30,7 @@
           <Property Name="LinkTypeId" Type="int" Nullable="false" />
           <Property Name="TargetThreadId" Type="int" Nullable="false" />
           <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Done" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Thread">
           <Key>
@@ -133,16 +133,16 @@
             <End Role="Thread" EntitySet="Threads" />
             <End Role="History" EntitySet="Histories" />
           </AssociationSet>
+          <AssociationSet Name="FK_Thread_Link" Association="BrigadierModel.FK_Thread_Link">
+            <End Role="LinkType" EntitySet="LinkTypes" />
+            <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
           <AssociationSet Name="FK_Thread_Local" Association="BrigadierModel.FK_Thread_Local">
             <End Role="Thread" EntitySet="Threads" />
             <End Role="Post" EntitySet="Posts" />
           </AssociationSet>
           <AssociationSet Name="FK_Thread_Target" Association="BrigadierModel.FK_Thread_Target">
             <End Role="Thread" EntitySet="Threads" />
-            <End Role="Post" EntitySet="Posts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Thread_Link" Association="BrigadierModel.FK_Thread_Link">
-            <End Role="LinkType" EntitySet="LinkTypes" />
             <End Role="Post" EntitySet="Posts" />
           </AssociationSet>
         </EntityContainer>
@@ -153,8 +153,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ThreadId" Type="Int32" Nullable="false" />
           <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ThreadScore" Type="Int32" Nullable="false" />
-          <Property Name="TargetScore" Type="Int32" Nullable="false" />
+          <Property Name="Score" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Thread" Relationship="BrigadierModel.FK_History_Thread" FromRole="History" ToRole="Thread" />
         </EntityType>
         <EntityType Name="LinkType">
@@ -174,9 +173,10 @@
           <Property Name="LinkTypeId" Type="Int32" Nullable="false" />
           <Property Name="TargetThreadId" Type="Int32" Nullable="false" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="LinkType" Relationship="BrigadierModel.FK_Thread_Link" FromRole="Post" ToRole="LinkType" />
           <NavigationProperty Name="LocalThread" Relationship="BrigadierModel.FK_Thread_Local" FromRole="Post" ToRole="Thread" />
           <NavigationProperty Name="TargetThread" Relationship="BrigadierModel.FK_Thread_Target" FromRole="Post" ToRole="Thread" />
-          <NavigationProperty Name="LinkType" Relationship="BrigadierModel.FK_Thread_Link" FromRole="Post" ToRole="LinkType" />
+          <Property Name="Done" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Thread">
           <Key>
@@ -186,7 +186,7 @@
           <Property Name="Url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Author" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="Sub" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Histories" Relationship="BrigadierModel.FK_History_Thread" FromRole="Thread" ToRole="History" />
+          <NavigationProperty Name="History" Relationship="BrigadierModel.FK_History_Thread" FromRole="Thread" ToRole="History" />
           <NavigationProperty Name="TargetingPosts" Relationship="BrigadierModel.FK_Thread_Local" FromRole="Thread" ToRole="Post" />
           <NavigationProperty Name="TargetedPosts" Relationship="BrigadierModel.FK_Thread_Target" FromRole="Thread" ToRole="Post" />
         </EntityType>
@@ -206,6 +206,18 @@
             </Principal>
             <Dependent Role="History">
               <PropertyRef Name="ThreadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Thread_Link">
+          <End Type="BrigadierModel.LinkType" Role="LinkType" Multiplicity="1" />
+          <End Type="BrigadierModel.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LinkType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="LinkTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -233,18 +245,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Thread_Link">
-          <End Type="BrigadierModel.LinkType" Role="LinkType" Multiplicity="1" />
-          <End Type="BrigadierModel.Post" Role="Post" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="LinkType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Post">
-              <PropertyRef Name="LinkTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -254,8 +254,7 @@
           <EntitySetMapping Name="Histories">
             <EntityTypeMapping TypeName="BrigadierModel.History">
               <MappingFragment StoreEntitySet="History">
-                <ScalarProperty Name="TargetScore" ColumnName="TargetScore" />
-                <ScalarProperty Name="ThreadScore" ColumnName="ThreadScore" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="ThreadId" ColumnName="ThreadId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -273,6 +272,7 @@
           <EntitySetMapping Name="Posts">
             <EntityTypeMapping TypeName="BrigadierModel.Post">
               <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="Done" ColumnName="Done" />
                 <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="TargetThreadId" ColumnName="TargetThreadId" />
                 <ScalarProperty Name="LinkTypeId" ColumnName="LinkTypeId" />

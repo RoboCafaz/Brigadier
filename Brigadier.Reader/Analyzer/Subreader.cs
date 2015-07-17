@@ -20,25 +20,12 @@ namespace Brigadier.Reader.Analyzer
         public static void Run()
         {
             Debug.WriteLine(" - - Started new Analysis - - ");
-            var reddit = GetReddit();
+            var reddit = RedditHandler.GetReddit();
             using (var context = new BrigadierEntities())
             {
                 CheckSubs(reddit, context);
             }
             Debug.WriteLine(" - - Analysis Complete - - ");
-        }
-
-        private static Reddit GetReddit()
-        {
-            Debug.WriteLine("Grabbing reddit instance.");
-            var reddit = new Reddit(Options.UserName, Options.Password);
-            reddit.InitOrUpdateUser();
-            if (reddit.User == null)
-            {
-                throw new RedditException("Could not authenticate user!");
-            }
-            Debug.WriteLine("Reddit instance retrieved.");
-            return reddit;
         }
 
         private static void CheckSubs(Reddit reddit, BrigadierEntities context)
