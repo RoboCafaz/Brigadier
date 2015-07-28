@@ -9,9 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brigadier.EntityFramework",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brigadier.Web", "Brigadier.Web\Brigadier.Web.csproj", "{2508E134-8B12-4B94-B968-7FF2F3779235}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brigadier.Reader", "Brigadier.Reader\Brigadier.Reader.csproj", "{44CD6523-AACA-48EB-BC46-A2B1C9FDF689}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brigadier.Reader.Runner", "Brigadier.Reader.Runner\Brigadier.Reader.Runner.csproj", "{34F4F0A5-BCF3-437D-A530-66001CFFD935}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brigadier.Reader", "Brigadier.Reader\Brigadier.Reader.csproj", "{34F4F0A5-BCF3-437D-A530-66001CFFD935}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +31,6 @@ Global
 		{2508E134-8B12-4B94-B968-7FF2F3779235}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2508E134-8B12-4B94-B968-7FF2F3779235}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2508E134-8B12-4B94-B968-7FF2F3779235}.Release|Any CPU.Build.0 = Release|Any CPU
-		{44CD6523-AACA-48EB-BC46-A2B1C9FDF689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44CD6523-AACA-48EB-BC46-A2B1C9FDF689}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44CD6523-AACA-48EB-BC46-A2B1C9FDF689}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44CD6523-AACA-48EB-BC46-A2B1C9FDF689}.Release|Any CPU.Build.0 = Release|Any CPU
 		{34F4F0A5-BCF3-437D-A530-66001CFFD935}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{34F4F0A5-BCF3-437D-A530-66001CFFD935}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34F4F0A5-BCF3-437D-A530-66001CFFD935}.Release|Any CPU.ActiveCfg = Release|Any CPU

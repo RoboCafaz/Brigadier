@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Brigadier.Reader.Analyzer;
 
-namespace Brigadier.Reader.Runner
+namespace Brigadier.Reader
 {
     public class Runner
     {
