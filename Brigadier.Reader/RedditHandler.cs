@@ -16,7 +16,7 @@ namespace Brigadier.Reader
         {
             if (Reddit == null)
             {
-                Debug.WriteLine("Creating reddit instance.");
+                Console.WriteLine("Creating reddit instance.");
                 var reddit = new Reddit(Options.UserName, Options.Password);
                 reddit.InitOrUpdateUser();
                 if (reddit.User == null)
@@ -24,7 +24,7 @@ namespace Brigadier.Reader
                     throw new RedditException("Could not authenticate user!");
                 }
                 Reddit = reddit;
-                Debug.WriteLine("Reddit instance retrieved.");
+                Console.WriteLine("Reddit instance retrieved.");
             }
             return Reddit;
         }

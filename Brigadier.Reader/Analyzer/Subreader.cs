@@ -19,45 +19,45 @@ namespace Brigadier.Reader.Analyzer
 
         public static void Run()
         {
-            Debug.WriteLine(" - - Started new Analysis - - ");
+            Console.WriteLine(" - - Started new Analysis - - ");
             var reddit = RedditHandler.GetReddit();
             using (var context = new BrigadierEntities())
             {
                 CheckSubs(reddit, context);
             }
-            Debug.WriteLine(" - - Analysis Complete - - ");
+            Console.WriteLine(" - - Analysis Complete - - ");
         }
 
         private static void CheckSubs(Reddit reddit, BrigadierEntities context)
         {
-            Debug.WriteLine("Getting analyzed subs.");
+            Console.WriteLine("Getting analyzed subs.");
             var subs = context.WatchedSubs.Select(x => x.Url);
             if (subs.Any())
             {
-                Debug.WriteLine("Retrieved " + subs.Count() + " subs.");
+                Console.WriteLine("Retrieved " + subs.Count() + " subs.");
                 foreach (var sub in subs)
                 {
-                    Debug.WriteLine(" - " + sub + " - ");
+                    Console.WriteLine(" - " + sub + " - ");
                     var newest = GetRecentPosts(sub, reddit, context);
                     AnalyzePosts(newest, context);
                 }
-                Debug.WriteLine("Saving database...");
+                Console.WriteLine("Saving database...");
                 context.SaveChanges();
             }
         }
 
         private static IEnumerable<RedditSharp.Things.Post> GetRecentPosts(string sub, Reddit reddit, BrigadierEntities context)
         {
-            Debug.WriteLine("Getting subreddit.");
+            Console.WriteLine("Getting subreddit.");
             var subreddit = reddit.GetSubreddit(sub);
-            Debug.WriteLine("Getting 25 most recent non-self posts.");
+            Console.WriteLine("Getting 25 most recent non-self posts.");
             var newData = subreddit.New.Take(25).Where(x => !x.IsSelfPost);
             return newData;
         }
 
         private static void AnalyzePosts(IEnumerable<RedditSharp.Things.Post> newest, BrigadierEntities context)
         {
-            Debug.WriteLine("Analyzing threads...");
+            Console.WriteLine("Analyzing threads...");
             foreach (var post in newest)
             {
                 CreateThread(post, context);
@@ -66,21 +66,21 @@ namespace Brigadier.Reader.Analyzer
 
         private static void CreateThread(RedditSharp.Things.Post reddit, BrigadierEntities context)
         {
-            Debug.WriteLine(" - Analyzing " + reddit.Shortlink + "- ");
+            Console.WriteLine(" - Analyzing " + reddit.Shortlink + "- ");
             var type = GetLinkTypeOfUrl(reddit.Url.Host);
             if (type == 4)
             {
-                Debug.WriteLine("We don't handle this type yet.");
+                Console.WriteLine("We don't handle this type yet.");
                 return;
             }
             var url = "http://reddit.com" + reddit.Url.LocalPath;
             var local = context.Threads.SingleOrDefault(x => x.Url == reddit.Shortlink);
             if (local != null)
             {
-                Debug.WriteLine("It already exists.");
+                Console.WriteLine("It already exists.");
                 return;
             }
-            Debug.WriteLine("New thread!");
+            Console.WriteLine("New thread!");
             local = new Thread
             {
                 Url = reddit.Shortlink,
@@ -91,7 +91,7 @@ namespace Brigadier.Reader.Analyzer
             var target = context.Threads.SingleOrDefault(x => x.Url == url);
             if (target == null)
             {
-                Debug.WriteLine("New target!");
+                Console.WriteLine("New target!");
                 target = new Thread
                 {
                     Url = url,
@@ -102,7 +102,7 @@ namespace Brigadier.Reader.Analyzer
             }
             else
             {
-                Debug.WriteLine("Target already exists.");
+                Console.WriteLine("Target already exists.");
             }
             var post = new Post
             {
@@ -111,7 +111,7 @@ namespace Brigadier.Reader.Analyzer
                 LocalThread = local,
                 TargetThread = target
             };
-            Debug.WriteLine("New post record added!");
+            Console.WriteLine("New post record added!");
             context.Posts.Add(post);
         }
 

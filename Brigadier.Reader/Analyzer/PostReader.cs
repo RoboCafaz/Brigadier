@@ -14,7 +14,7 @@ namespace Brigadier.Reader.Analyzer
     {
         public static void Run()
         {
-            Debug.WriteLine(" - - Started New Post Update Sweep - - ");
+            Console.WriteLine(" - - Started New Post Update Sweep - - ");
             var reddit = RedditHandler.GetReddit();
             using (var context = new BrigadierEntities())
             {
@@ -22,19 +22,19 @@ namespace Brigadier.Reader.Analyzer
                 CheckThreads(reddit, context, toCheck);
                 context.SaveChanges();
             }
-            Debug.WriteLine(" - - Sweep Complete - - ");
+            Console.WriteLine(" - - Sweep Complete - - ");
         }
 
         private static IEnumerable<Thread> GetPostsFromLastDay(BrigadierEntities context)
         {
-            Debug.WriteLine("Getting incomplete posts from the past 24 hours.");
+            Console.WriteLine("Getting incomplete posts from the past 24 hours.");
             var yesterday = DateTime.Now.AddHours(-24);
             return context.Posts.Where(x => !x.Done && x.Created > yesterday).Select(x => x.TargetThread).Distinct();
         }
 
         private static void CheckThreads(Reddit reddit, BrigadierEntities context, IEnumerable<Thread> threads)
         {
-            Debug.WriteLine("Checking " + threads.Count() + " threads.");
+            Console.WriteLine("Checking " + threads.Count() + " threads.");
             foreach (var thread in threads)
             {
                 CheckThread(reddit, context, thread);
@@ -43,17 +43,17 @@ namespace Brigadier.Reader.Analyzer
 
         private static void CheckThread(Reddit reddit, BrigadierEntities context, Thread thread)
         {
-            Debug.WriteLine(" - Checking " + thread.Url + " - ");
+            Console.WriteLine(" - Checking " + thread.Url + " - ");
             Uri uri;
             if (Uri.TryCreate(thread.Url, UriKind.Absolute, out uri))
             {
                 try
                 {
-                    Debug.WriteLine("Fetching post.");
+                    Console.WriteLine("Fetching post.");
                     var thing = reddit.GetPost(uri);
                     if (thing == null)
                     {
-                        Debug.WriteLine("Could not find post.");
+                        Console.Error.WriteLine("Could not find post.");
                     }
                     else
                     {
@@ -63,19 +63,19 @@ namespace Brigadier.Reader.Analyzer
                             ThreadId = thread.Id,
                             Score = thing.Score
                         };
-                        Debug.WriteLine("Score was " + history.Score + " at " + history.Time);
+                        Console.WriteLine("Score was " + history.Score + " at " + history.Time);
                         context.Histories.Add(history);
                         return;
                     }
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine("Post fetching failed.");
+                    Console.Error.WriteLine("Post fetching failed.");
                 }
             }
             else
             {
-                Debug.WriteLine("Could not create thread for url.");
+                Console.Error.WriteLine("Could not create thread for url.");
             }
             KillThread(thread);
         }
@@ -90,7 +90,7 @@ namespace Brigadier.Reader.Analyzer
 
         private static void KillPost(Post post)
         {
-            Debug.WriteLine("Killing post " + post.Id + "...");
+            Console.WriteLine("Killing post " + post.Id + "...");
             post.Done = true;
         }
     }
