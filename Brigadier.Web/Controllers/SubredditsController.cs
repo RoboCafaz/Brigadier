@@ -19,12 +19,12 @@ namespace Brigadier.Web.Controllers
                 {
                     Id = x.Id,
                     Url = x.Url,
-                    Incoming = context.Threads.Where(y => y.Sub == x.Url).GroupBy(y => y.Sub).Select(y => new SubredditPair
+                    Incoming = context.Posts.Where(y => y.TargetThread.Sub == x.Url).GroupBy(y => y.LocalThread.Sub).Select(y => new SubredditPair
                     {
                         Key = y.Key,
                         Value = y.Count()
                     }).OrderByDescending(y=>y.Value).ThenBy(y => y.Key),
-                    Outgoing = context.Threads.Where(y => y.Sub == x.Url).GroupBy(y => y.Sub).Select(y => new SubredditPair
+                    Outgoing = context.Posts.Where(y => y.LocalThread.Sub == x.Url).GroupBy(y => y.TargetThread.Sub).Select(y => new SubredditPair
                     {
                         Key = y.Key,
                         Value = y.Count()
