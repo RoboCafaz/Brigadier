@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Brigadier.Web.Models.PostModel>
+<h2>@ViewBag.Title</h2>
+<table class="table-striped">
+    <thead>
+        <tr>
+            <th>Local Thread</th>
+            <th>Local Author</th>
+            <th>Post Type</th>
+            <th>Score History</th>
+        </tr>
+        <tr>
+            <th>Target Thread</th>
+            <th>Target Author</th>
+            <th>Target Sub</th>
+            <th>...</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var instance in Model)
+        {
+            <tr>
+                <td>@instance.LocalThread</td>
+                <td>@instance.LocalAuthor</td>
+                <td>@instance.LocalType</td>
+                <td>
+                    <ul>
+                        @foreach (var time in instance.LocalHistory)
+                        {
+                            <li>@time.Date - @time.Score</li>
+                        }
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>@instance.TargetThread</td>
+                <td>@instance.TargetAuthor</td>
+                <td>@instance.TargetSub</td>
+                <td>
+
+                    <ul>
+                        @foreach (var time in instance.LocalHistory)
+                        {
+                            <li>@time.Date - @time.Score</li>
+                        }
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -14,5 +14,7 @@ INSERT [dbo].[WatchedSub] ([Id], [Url]) VALUES (4, N'kiachatroom')
 INSERT [dbo].[WatchedSub] ([Id], [Url]) VALUES (5, N'gamerghazi')
 INSERT [dbo].[WatchedSub] ([Id], [Url]) VALUES (6, N'bestof')
 INSERT [dbo].[WatchedSub] ([Id], [Url]) VALUES (7, N'worstof')
+INSERT [dbo].[WatchedSub] ([Id], [Url]) VALUES (8, N'CircleBroke')
+INSERT [dbo].[WatchedSub] ([Id], [Url]) VALUES (9, N'SubredditCancer')
 SET IDENTITY_INSERT [dbo].[WatchedSub] OFF
 GO

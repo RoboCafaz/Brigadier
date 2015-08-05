@@ -17,7 +17,7 @@
             {
                 <tr>
                     <td>@sub.Id</td>
-                    <td><a href="https://www.reddit.com/r/@sub.Url" target="_blank">@sub.Url</a></td>
+                    <td>@Html.ActionLink(sub.Url, "View", new { id = sub.Url }) <a href="https://www.reddit.com/r/@sub.Url" target="_blank">?</a></td>
                     <td>
                         <ul>
                             @foreach (var pair in sub.Incoming)
