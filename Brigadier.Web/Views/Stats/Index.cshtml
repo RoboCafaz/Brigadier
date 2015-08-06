@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Brigadier.Web.Models.UserPostCountModel>
+
+<h2>@ViewBag.Title</h2>
+
+<section>
+    <table class="table table-responsive table-striped">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Count</th>
+                <th>Favorite</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Name</td>
+                    <td>@user.Count</td>
+                    <td>
+                        <ul>
+                            @foreach (var sub in user.SubPosts)
+                            {
+                                <li>@sub.Name (@sub.Count)</li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
